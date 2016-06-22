@@ -51,19 +51,17 @@ class NameTable extends Table
     @compatibleFull = strings[18]
     @sampleText = strings[19]
     
-  subsetTag = "AAAAAA"
   encode: ->
     strings = {}
     strings[id] = val for id, val of @strings
     
     # generate a new postscript name for this subset
-    postscriptName = new NameEntry "#{subsetTag}+#{@postscriptName}", 
+    postscriptName = new NameEntry "#{@postscriptName}",
       platformID: 1
       encodingID: 0
       languageID: 0
       
     strings[6] = [postscriptName]
-    subsetTag = utils.successorOf(subsetTag)
     
     # count the number of strings in the table
     strCount = 0
