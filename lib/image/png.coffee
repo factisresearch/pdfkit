@@ -109,14 +109,9 @@ class PNGImage
         imgData[p++] = pixels[i++]
         alphaChannel[a++] = pixels[i++]
 
-      done = 0
-      zlib.deflate imgData, (err, @imgData) =>
-        throw err if err
-        @finalize() if ++done is 2
-
-      zlib.deflate alphaChannel, (err, @alphaChannel) =>
-        throw err if err
-        @finalize() if ++done is 2
+      @imgData = zlib.deflateSync imgData
+      @alphaChannel = zlib.deflateSync alphaChannel
+      @finalize()
 
   loadIndexedAlphaChannel: (fn) ->
     transparency = @image.transparency.indexed
@@ -127,8 +122,7 @@ class PNGImage
       for j in [0...pixels.length] by 1
         alphaChannel[i++] = transparency[pixels[j]]
 
-      zlib.deflate alphaChannel, (err, @alphaChannel) =>
-        throw err if err
-        @finalize()
+      @alphaChannel = zlib.deflateSync alphaChannel
+      @finalize()
 
 module.exports = PNGImage
