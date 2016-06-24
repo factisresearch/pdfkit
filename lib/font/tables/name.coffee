@@ -50,13 +50,13 @@ class NameTable extends Table
     @preferredSubfamily = strings[17]
     @compatibleFull = strings[18]
     @sampleText = strings[19]
-    
-  encode: ->
+
+  encode: (tag) ->
     strings = {}
     strings[id] = val for id, val of @strings
     
     # generate a new postscript name for this subset
-    postscriptName = new NameEntry "#{@postscriptName}",
+    postscriptName = new NameEntry "#{tag}+#{@postscriptName}",
       platformID: 1
       encodingID: 0
       languageID: 0

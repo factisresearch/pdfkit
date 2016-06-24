@@ -69,7 +69,7 @@
       return this.sampleText = strings[19];
     };
 
-    NameTable.prototype.encode = function() {
+    NameTable.prototype.encode = function(tag) {
       var id, j, len, list, nameID, nameTable, postscriptName, ref, strCount, strTable, string, strings, table, val;
       strings = {};
       ref = this.strings;
@@ -77,7 +77,7 @@
         val = ref[id];
         strings[id] = val;
       }
-      postscriptName = new NameEntry("" + this.postscriptName, {
+      postscriptName = new NameEntry(tag + "+" + this.postscriptName, {
         platformID: 1,
         encodingID: 0,
         languageID: 0
