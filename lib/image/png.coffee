@@ -95,7 +95,7 @@ class PNGImage
     @imgData = null
 
   splitAlphaChannel: ->
-    @image.decodePixels (pixels) =>
+    fn = (pixels) =>
       colorByteSize = @image.colors * @image.bits / 8
       pixelCount = @width * @height
       imgData = new Buffer(pixelCount * colorByteSize)
@@ -112,10 +112,11 @@ class PNGImage
       @imgData = zlib.deflateSync imgData
       @alphaChannel = zlib.deflateSync alphaChannel
       @finalize()
+    @image.decodePixels fn, true
 
-  loadIndexedAlphaChannel: (fn) ->
+  loadIndexedAlphaChannel: ->
     transparency = @image.transparency.indexed
-    @image.decodePixels (pixels) =>
+    fn = (pixels) =>
       alphaChannel = new Buffer(@width * @height)
 
       i = 0
@@ -124,5 +125,6 @@ class PNGImage
 
       @alphaChannel = zlib.deflateSync alphaChannel
       @finalize()
+    @image.decodePixels fn, true
 
 module.exports = PNGImage
