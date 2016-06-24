@@ -91,7 +91,7 @@
     PNGImage.prototype.splitAlphaChannel = function() {
       return this.image.decodePixels((function(_this) {
         return function(pixels) {
-          var a, alphaChannel, colorByteSize, done, i, imgData, len, p, pixelCount;
+          var a, alphaChannel, colorByteSize, i, imgData, len, p, pixelCount;
           colorByteSize = _this.image.colors * _this.image.bits / 8;
           pixelCount = _this.width * _this.height;
           imgData = new Buffer(pixelCount * colorByteSize);
@@ -104,25 +104,9 @@
             imgData[p++] = pixels[i++];
             alphaChannel[a++] = pixels[i++];
           }
-          done = 0;
-          zlib.deflate(imgData, function(err, imgData1) {
-            _this.imgData = imgData1;
-            if (err) {
-              throw err;
-            }
-            if (++done === 2) {
-              return _this.finalize();
-            }
-          });
-          return zlib.deflate(alphaChannel, function(err, alphaChannel1) {
-            _this.alphaChannel = alphaChannel1;
-            if (err) {
-              throw err;
-            }
-            if (++done === 2) {
-              return _this.finalize();
-            }
-          });
+          _this.imgData = zlib.deflateSync(imgData);
+          _this.alphaChannel = zlib.deflateSync(alphaChannel);
+          return _this.finalize();
         };
       })(this));
     };
@@ -138,13 +122,8 @@
           for (j = k = 0, ref = pixels.length; k < ref; j = k += 1) {
             alphaChannel[i++] = transparency[pixels[j]];
           }
-          return zlib.deflate(alphaChannel, function(err, alphaChannel1) {
-            _this.alphaChannel = alphaChannel1;
-            if (err) {
-              throw err;
-            }
-            return _this.finalize();
-          });
+          _this.alphaChannel = zlib.deflateSync(alphaChannel);
+          return _this.finalize();
         };
       })(this));
     };
