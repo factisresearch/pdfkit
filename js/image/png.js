@@ -89,7 +89,8 @@
     };
 
     PNGImage.prototype.splitAlphaChannel = function() {
-      return this.image.decodePixels((function(_this) {
+      var fn;
+      fn = (function(_this) {
         return function(pixels) {
           var a, alphaChannel, colorByteSize, i, imgData, len, p, pixelCount;
           colorByteSize = _this.image.colors * _this.image.bits / 8;
@@ -108,13 +109,14 @@
           _this.alphaChannel = zlib.deflateSync(alphaChannel);
           return _this.finalize();
         };
-      })(this));
+      })(this);
+      return this.image.decodePixels(fn, true);
     };
 
-    PNGImage.prototype.loadIndexedAlphaChannel = function(fn) {
-      var transparency;
+    PNGImage.prototype.loadIndexedAlphaChannel = function() {
+      var fn, transparency;
       transparency = this.image.transparency.indexed;
-      return this.image.decodePixels((function(_this) {
+      fn = (function(_this) {
         return function(pixels) {
           var alphaChannel, i, j, k, ref;
           alphaChannel = new Buffer(_this.width * _this.height);
@@ -125,7 +127,8 @@
           _this.alphaChannel = zlib.deflateSync(alphaChannel);
           return _this.finalize();
         };
-      })(this));
+      })(this);
+      return this.image.decodePixels(fn, true);
     };
 
     return PNGImage;

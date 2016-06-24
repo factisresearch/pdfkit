@@ -34,7 +34,7 @@
     "blob-stream": "^0.1.2"
   },
   "dependencies": {
-    "png-js": ">=0.1.0",
+    "png-js": "factisresearch/png.js#master",
     "linebreak": "~0.1.0"
   },
   "scripts": {
