@@ -89,9 +89,9 @@ class Subset
     loca = @font.loca.encode(glyf.offsets)
 
     # build subset tag and name table
-    hash = Crypto.createHash('md5');
-    hash.update JSON.stringify(glyf.offsets)
-    hash.update JSON.stringify(glyf.table)
+    hash = Crypto.createHash('md5')
+    hash.update new Buffer new Uint32Array(glyf.offsets)
+    hash.update new Buffer new Uint32Array(glyf.table)
     tag = hash.digest('base64').substr(0, 6).toUpperCase()
     name = @font.name.encode(tag)
 

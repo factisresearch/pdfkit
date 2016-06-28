@@ -126,8 +126,8 @@
       glyf = this.font.glyf.encode(glyphs, oldIDs, old2new);
       loca = this.font.loca.encode(glyf.offsets);
       hash = Crypto.createHash('md5');
-      hash.update(JSON.stringify(glyf.offsets));
-      hash.update(JSON.stringify(glyf.table));
+      hash.update(new Buffer(new Uint32Array(glyf.offsets)));
+      hash.update(new Buffer(new Uint32Array(glyf.table)));
       tag = hash.digest('base64').substr(0, 6).toUpperCase();
       name = this.font.name.encode(tag);
       this.postscriptName = name.postscriptName;
